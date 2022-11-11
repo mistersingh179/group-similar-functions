@@ -1,8 +1,7 @@
 import _ from "lodash";
 import pluralize from "pluralize";
 
-const { plural, singular, isSingular } = pluralize;
-
+const { plural, singular, isSingular, isPlural } = pluralize;
 export default function groupSimilarFunctionNames(items, nameOfKey) {
   let convertedInputToObj = false;
   if (items.every((x) => _.isString(x))) {
@@ -22,22 +21,25 @@ export default function groupSimilarFunctionNames(items, nameOfKey) {
       output.push(item);
       indexesTaken[idx] = true;
     }
-    const nameAsSuffix = name.charAt(0).toLocaleUpperCase() + name.slice(1);
-    let nameAsSuffix2 = nameAsSuffix;
-    if (isSingular(nameAsSuffix)) {
-      nameAsSuffix2 = plural(nameAsSuffix);
-    } else {
-      nameAsSuffix2 = singular(nameAsSuffix);
+
+    let siblingNames = [];
+    siblingNames.push(name);
+    if (isSingular(name)) {
+      siblingNames.push(plural(name));
     }
+    if (isPlural(name)) {
+      siblingNames.push(singular(name));
+    }
+    if (name === "owner") {
+      siblingNames.push("ownership");
+    }
+    siblingNames = siblingNames.map(
+      (name) => name.charAt(0).toLocaleUpperCase() + name.slice(1)
+    );
+
     items.forEach((comparingItem, comparingItemIdx) => {
       const comparingName = comparingItem[nameOfKey];
-      if (
-        comparingName === name ||
-        comparingName.endsWith(nameAsSuffix) ||
-        comparingName.endsWith(nameAsSuffix2) ||
-        comparingName.startsWith(nameAsSuffix) ||
-        comparingName.startsWith(nameAsSuffix2)
-      ) {
+      if(siblingNames.some(siblingName => comparingName.endsWith(siblingName))){
         if (!indexesTaken[comparingItemIdx]) {
           output.push(comparingItem);
           indexesTaken[comparingItemIdx] = true;
@@ -45,9 +47,9 @@ export default function groupSimilarFunctionNames(items, nameOfKey) {
       }
     });
   });
-  if(convertedInputToObj == true){
-    return output.map(item => item[nameOfKey]);
-  }else{
+  if (convertedInputToObj == true) {
+    return output.map((item) => item[nameOfKey]);
+  } else {
     return output;
   }
 }

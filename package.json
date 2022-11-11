@@ -1,6 +1,6 @@
 {
   "name": "group-similar-functions",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A helper function to group similar function names together",
   "main": "index.js",
   "scripts": {
@@ -19,5 +19,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/mistersingh179/group-similar-functions"
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1"
   }
 }
