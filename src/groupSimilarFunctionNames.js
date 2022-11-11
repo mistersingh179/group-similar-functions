@@ -4,7 +4,6 @@ import pluralize from "pluralize";
 const { plural, singular, isSingular } = pluralize;
 
 export default function groupSimilarFunctionNames(items, nameOfKey) {
-  console.log("groupSimilarFunctionNames got: ", items, nameOfKey);
   let convertedInputToObj = false;
   if (items.every((x) => _.isString(x))) {
     convertedInputToObj = true;
@@ -12,11 +11,9 @@ export default function groupSimilarFunctionNames(items, nameOfKey) {
       name: item,
     }));
     nameOfKey = "name";
-    console.log("groupSimilarFunctionNames fixed input to: ", items, nameOfKey);
   }
 
   items.sort((a, b) => a[nameOfKey].length - b[nameOfKey].length);
-  console.log("sorted names: ", items);
   const output = [];
   const indexesTaken = {};
   items.forEach((item, idx) => {
@@ -41,7 +38,6 @@ export default function groupSimilarFunctionNames(items, nameOfKey) {
         comparingName.startsWith(nameAsSuffix) ||
         comparingName.startsWith(nameAsSuffix2)
       ) {
-        console.log("you two are connected: ", name, comparingName);
         if (!indexesTaken[comparingItemIdx]) {
           output.push(comparingItem);
           indexesTaken[comparingItemIdx] = true;

@@ -11,3 +11,5 @@
 - and install it by doing `npm link your-pacakge-name`
 - this will install the package as if you had done `npm i your-package-name`. but we did `npm link` instead so it just linked to where it was globally
 - we can now do `npm list` and see that the package was installed and that it was installed from local path
+- good part is now when you change code locally in your package it is immediately available in your other project to use without having to `npm link` or `install` it.
+- 
